@@ -50,9 +50,27 @@ void levelOrderTrav(treeNode *root)
 {
     if (root == NULL)
         return;
-    Queue<treeNode *> Q;
-    Q.Push(root);
-    while (!Q.Empty())
+    Queue<treeNode *> q;
+    q.Push(root);
+    q.Push(NULL);
+    while (!q.Empty())
+    {
+        treeNode *node = q.Front();
+        q.Pop();
+        if (node != NULL)
+        {
+            cout << node->data << " ";
+            if (node->leftChild)
+                q.Push(node->leftChild);
+            if (node->rightChild)
+                q.Push(node->rightChild);
+        }
+        else if (!q.Empty())
+        {
+            q.Push(NULL);
+        }
+    }
+    /* while (!Q.Empty())
     {
         treeNode *current = Q.Front();
         cout << current->data << " ";
@@ -61,7 +79,7 @@ void levelOrderTrav(treeNode *root)
         if (current->rightChild != NULL)
             Q.Push(current->rightChild);
         Q.Pop();
-    }
+    } */
 }
 
 int main()
