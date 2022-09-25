@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include "MYQUEUE.h"
+#include <queue>
 using namespace std;
 
 class treeNode
@@ -50,24 +50,24 @@ void levelOrderTrav(treeNode *root)
 {
     if (root == NULL)
         return;
-    Queue<treeNode *> q;
-    q.Push(root);
-    q.Push(NULL);
-    while (!q.Empty())
+    queue<treeNode *> q;
+    q.push(root);
+    q.push(NULL);
+    while (!q.empty())
     {
-        treeNode *node = q.Front();
-        q.Pop();
+        treeNode *node = q.front();
+        q.pop();
         if (node != NULL)
         {
             cout << node->data << " ";
             if (node->leftChild)
-                q.Push(node->leftChild);
+                q.push(node->leftChild);
             if (node->rightChild)
-                q.Push(node->rightChild);
+                q.push(node->rightChild);
         }
-        else if (!q.Empty())
+        else if (!q.empty())
         {
-            q.Push(NULL);
+            q.push(NULL);
         }
     }
     /* while (!Q.Empty())
@@ -80,6 +80,47 @@ void levelOrderTrav(treeNode *root)
             Q.Push(current->rightChild);
         Q.Pop();
     } */
+}
+
+int findMaxInLevelOrd(treeNode *root, int k)
+{
+    if (root == NULL)
+    {
+        return -1;
+    }
+    queue<treeNode *> q;
+    q.push(root);
+    q.push(NULL);
+    int level = 0;
+    int max = INT_MIN;
+    while (!q.empty())
+    {
+        treeNode *node = q.front();
+        q.pop();
+        if (node != NULL)
+        {
+            if (k == level)
+            {
+                if (node->data > max)
+                {
+                    max = node->data;
+                }
+            }
+            if (node->leftChild)
+                q.push(node->leftChild);
+            if (node->rightChild)
+                q.push(node->rightChild);
+        }
+        else
+        {
+            if (!q.empty())
+            {
+                q.push(NULL);
+                level++;
+            }
+        }
+    }
+    return max;
 }
 
 int main()
@@ -113,7 +154,7 @@ int main()
         }
     }
 
-    levelOrderTrav(allNodes[0]);
+    // levelOrderTrav(allNodes[0]);
     /* string preOrdertext = "";
     string inOrdertext = "";
     string postOrdertext = "";
@@ -124,5 +165,20 @@ int main()
     cout << "Pre-Order: " << preOrdertext << endl;
     cout << "In-Order: " << inOrdertext << endl;
     cout << "Post-Order: " << postOrdertext << endl; */
+    int k = 2;
+    cout << "Maximum Number in " << k << "th level is: " << findMaxInLevelOrd(allNodes[0], k) << endl;
     return 0;
 }
+
+/*
+9
+0 1 2
+1 3 4
+2 5 6
+3 -1 -1
+4 -1 -1
+5 7 8
+6 -1 -1
+7 -1 -1
+8 -1 -1
+*/
